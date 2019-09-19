@@ -7,8 +7,8 @@ import com.rookieli.libannotation.Factory;
  * 作者: liyong
  * 描述: class description
  */
-@Factory(shape = "Circle",type = Shape.class)
-public class Circle extends MyShape {
+@Factory(shape = "Circle", type = Shape.class)
+public class Circle implements Shape{
 
 
 	@Override
