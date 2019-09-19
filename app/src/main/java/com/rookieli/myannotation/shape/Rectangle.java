@@ -7,7 +7,7 @@ import com.rookieli.libannotation.Factory;
  * 作者: liyong
  * 描述: class description
  */
-@Factory(shape = "Rectangle")
+@Factory(shape = "Rectangle",type = Shape.class)
 public class Rectangle implements Shape {
 	@Override
 	public void draw() {
