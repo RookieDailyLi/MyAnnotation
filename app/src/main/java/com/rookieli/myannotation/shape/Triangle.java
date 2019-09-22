@@ -7,10 +7,10 @@ import com.rookieli.libannotation.Factory;
  * 作者: liyong
  * 描述: class description
  */
-@Factory(shape = "Triangle",type = Shape.class)
-public class Triangle implements Shape {
+@Factory(shape = "Triangle",type = AbsShape.class)
+public class Triangle extends AbsShape {
 	@Override
 	public void draw() {
-
+		System.out.println("-------draw Triangle-------");
 	}
 }

@@ -2,6 +2,7 @@ package com.rookieli.libcompiler;
 
 import com.google.auto.service.AutoService;
 import com.rookieli.libannotation.Factory;
+import com.rookieli.libannotation.Table;
 import com.rookieli.libcompiler.exception.ProcessorException;
 import com.rookieli.libcompiler.module.FactoryAnnotatedClass;
 import com.rookieli.libcompiler.module.FactoryAnnotatedGroup;
@@ -26,7 +27,7 @@ import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 
 @AutoService(Processor.class)
-public class FactoryProcessor extends AbstractProcessor {
+public class FactoryProcessor2 extends AbstractProcessor {
 	private Elements elementUtil;
 	private Filer filer;
 	private Types typeUtil;
@@ -44,39 +45,13 @@ public class FactoryProcessor extends AbstractProcessor {
 	@Override
 	public Set<String> getSupportedAnnotationTypes() {
 		LinkedHashSet hashSet = new LinkedHashSet();
-		hashSet.add(Factory.class.getCanonicalName());
+		hashSet.add(Table.class.getCanonicalName());
 		return hashSet;
 	}
 
 	@Override
 	public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
-		if (set == null || set.size() == 0) {
-			messager.printMessage(Diagnostic.Kind.NOTE, "set.size() = " + (set == null ? null : set.size()));
-			return true;
-		}
-		try {
-			for (Element element : roundEnvironment.getElementsAnnotatedWith(Factory.class)) {
-				messager.printMessage(Diagnostic.Kind.NOTE, "element = " + element.getSimpleName());
-				FactoryAnnotatedClass factoryAnnotatedClass = new FactoryAnnotatedClass(elementUtil, typeUtil, element);
-				String qualifiedGroupName = factoryAnnotatedClass.getQualifiedGroupName();
-				FactoryAnnotatedGroup factoryAnnotatedGroup = groups.get(qualifiedGroupName);
-				if (factoryAnnotatedGroup == null) {
-					factoryAnnotatedGroup = new FactoryAnnotatedGroup(factoryAnnotatedClass.getQualifiedGroupName());
-				}
-				factoryAnnotatedGroup.add(factoryAnnotatedClass);
-				groups.put(qualifiedGroupName, factoryAnnotatedGroup);
-			}
-
-			for (FactoryAnnotatedGroup clsGroup : groups.values()) {
-				clsGroup.generateCode(elementUtil, filer);
-			}
-			groups.clear();
-		} catch (ProcessorException e) {
-			messager.printMessage(Diagnostic.Kind.NOTE, e.getMessage(), e.getElement());
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		messager.printMessage(Diagnostic.Kind.NOTE, "set.size() = " + (set == null ? null : set.size()));
 		return true;
 	}
 

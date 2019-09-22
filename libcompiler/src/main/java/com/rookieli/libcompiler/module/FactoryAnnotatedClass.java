@@ -1,7 +1,6 @@
 package com.rookieli.libcompiler.module;
 
 import com.rookieli.libannotation.Factory;
-import com.rookieli.libcompiler.exception.IllegalAnnotateElementTypeException;
 import com.rookieli.libcompiler.exception.ProcessorException;
 
 import java.util.List;
@@ -39,7 +38,7 @@ public class FactoryAnnotatedClass {
 	private void checkElementValid(Element element) {
 		//排除接口、注解、枚举类型
 		if (element.getKind() != ElementKind.CLASS) {
-			throw new IllegalAnnotateElementTypeException(typeElement, "Only class can be annotated by @%s", Factory.class.getSimpleName());
+			throw new ProcessorException(typeElement, "Only class can be annotated by @%s", Factory.class.getSimpleName());
 		}
 		this.typeElement = (TypeElement) element;
 
@@ -85,7 +84,7 @@ public class FactoryAnnotatedClass {
 				}
 
 				String qualified = ((TypeElement) typeUtil.asElement(superTypeMirror)).getQualifiedName().toString();
-				if (qualified.equals(qualifiedGroupName)){
+				if (qualified.equals(qualifiedGroupName)) {
 					break;
 				}
 
@@ -119,9 +118,20 @@ public class FactoryAnnotatedClass {
 		}
 
 		if (!hasPublicConstruct) {
-			throw new ProcessorException(typeElement, "The class %s is must have a public construct",
+			throw new ProcessorException(typeElement, "The class %s must have a public construct",
 					typeElement.getQualifiedName().toString());
 		}
+	}
 
+	public String getShapeName() {
+		return shapeName;
+	}
+
+	public String getQualifiedGroupName() {
+		return qualifiedGroupName;
+	}
+
+	public TypeElement getTypeElement() {
+		return typeElement;
 	}
 }
